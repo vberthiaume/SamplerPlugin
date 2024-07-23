@@ -103,40 +103,7 @@ public:
 private:
 
     template <typename Element>
-    void process (AudioBuffer<Element>& buffer, MidiBuffer& midiMessages)
-    {
-        // Try to acquire a lock on the command queue.
-        // If we were successful, we pop all pending commands off the queue and
-        // apply them to the processor.
-        // If we weren't able to acquire the lock, it's because someone called
-        // createEditor, which requires that the processor data model stays in
-        // a valid state for the duration of the call.
-        const GenericScopedTryLock<SpinLock> lock (commandQueueMutex);
-
-        if (lock.isLocked())
-            commands.call (*this);
-
-        synthesiser.renderNextBlock (buffer, midiMessages, 0, buffer.getNumSamples());
-
-        auto loadedSamplerSound = samplerSound;
-
-        if (loadedSamplerSound->getSample() == nullptr)
-            return;
-
-        auto numVoices = synthesiser.getNumVoices();
-
-        // Update the current playback positions
-        for (auto i = 0; i < maxVoices; ++i)
-        {
-            auto* voicePtr = dynamic_cast<MPESamplerVoice*> (synthesiser.getVoice (i));
-
-            if (i < numVoices && voicePtr != nullptr)
-                playbackPositions[(size_t) i] = static_cast<float> (voicePtr->getCurrentSamplePosition() / loadedSamplerSound->getSample()->getSampleRate());
-            else
-                playbackPositions[(size_t) i] = 0.0f;
-        }
-
-    }
+    void process (AudioBuffer<Element>& buffer, MidiBuffer& midiMessages);
 
     CommandFifo<SamplerAudioProcessor> commands;
 
@@ -234,4 +201,42 @@ inline std::unique_ptr<InputStream> createAssetInputStream (const char* resource
 
     return resourceFile.createInputStream ();
 #endif
+}
+
+//==========================================================
+
+template<typename Element>
+void SamplerAudioProcessor::process (AudioBuffer<Element>& buffer, MidiBuffer& midiMessages)
+{
+    // Try to acquire a lock on the command queue.
+    // If we were successful, we pop all pending commands off the queue and
+    // apply them to the processor.
+    // If we weren't able to acquire the lock, it's because someone called
+    // createEditor, which requires that the processor data model stays in
+    // a valid state for the duration of the call.
+    const GenericScopedTryLock<SpinLock> lock (commandQueueMutex);
+
+    if (lock.isLocked ())
+        commands.call (*this);
+
+    synthesiser.renderNextBlock (buffer, midiMessages, 0, buffer.getNumSamples ());
+
+    auto loadedSamplerSound = samplerSound;
+
+    if (loadedSamplerSound->getSample () == nullptr)
+        return;
+
+    auto numVoices = synthesiser.getNumVoices ();
+
+    // Update the current playback positions
+    for (auto i = 0; i < maxVoices; ++i)
+    {
+        auto* voicePtr = dynamic_cast<MPESamplerVoice*> (synthesiser.getVoice (i));
+
+        if (i < numVoices && voicePtr != nullptr)
+            playbackPositions[(size_t) i] = static_cast<float> (voicePtr->getCurrentSamplePosition () / loadedSamplerSound->getSample ()->getSampleRate ());
+        else
+            playbackPositions[(size_t) i] = 0.0f;
+    }
+
 }
