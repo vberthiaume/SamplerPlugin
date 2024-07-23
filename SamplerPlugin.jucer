@@ -8,6 +8,8 @@
               jucerFormatVersion="1">
   <MAINGROUP id="GyqG2V" name="SamplerPlugin">
     <GROUP id="{71A0D287-0DF2-05B0-3BFF-8269B0A74F18}" name="Source">
+      <FILE id="O9sY94" name="Command.cpp" compile="1" resource="0" file="Source/Command.cpp"/>
+      <FILE id="frLPCP" name="Command.h" compile="0" resource="0" file="Source/Command.h"/>
       <FILE id="d63Mff" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
       <FILE id="saslQe" name="SamplerPluginDemo.h" compile="0" resource="0"
             file="Source/SamplerPluginDemo.h"/>
