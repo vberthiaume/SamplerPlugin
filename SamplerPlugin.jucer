@@ -9,6 +9,14 @@
   <MAINGROUP id="GyqG2V" name="SamplerPlugin">
     <GROUP id="{71A0D287-0DF2-05B0-3BFF-8269B0A74F18}" name="Source">
       <GROUP id="{FB2FDEEA-D2B9-910C-7E08-B4FBBB3346B5}" name="GUI">
+        <FILE id="vH2Vb3" name="MpeSettingsComponent.cpp" compile="1" resource="0"
+              file="Source/GUI/MpeSettingsComponent.cpp"/>
+        <FILE id="dwHlyA" name="MpeSettingsComponent.h" compile="0" resource="0"
+              file="Source/GUI/MpeSettingsComponent.h"/>
+        <FILE id="V7Abjl" name="SamplerAudioEditor.cpp" compile="1" resource="0"
+              file="Source/GUI/SamplerAudioEditor.cpp"/>
+        <FILE id="Eux0lZ" name="SamplerAudioEditor.h" compile="0" resource="0"
+              file="Source/GUI/SamplerAudioEditor.h"/>
         <FILE id="bN5IU8" name="LoopPointMarker.cpp" compile="1" resource="0"
               file="Source/GUI/LoopPointMarker.cpp"/>
         <FILE id="DncFK5" name="LoopPointMarker.h" compile="0" resource="0"
@@ -42,10 +50,6 @@
       <FILE id="QFMjoy" name="Helper.cpp" compile="1" resource="0" file="Source/Helper.cpp"/>
       <FILE id="Tqcklc" name="Helper.h" compile="0" resource="0" file="Source/Helper.h"/>
       <FILE id="d63Mff" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
-      <FILE id="p94dfm" name="MpeSettingsComponent.cpp" compile="1" resource="0"
-            file="Source/MpeSettingsComponent.cpp"/>
-      <FILE id="ILletk" name="MpeSettingsComponent.h" compile="0" resource="0"
-            file="Source/MpeSettingsComponent.h"/>
       <FILE id="RAQEYK" name="Sampler.cpp" compile="1" resource="0" file="Source/Sampler.cpp"/>
       <FILE id="gB007T" name="Sampler.h" compile="0" resource="0" file="Source/Sampler.h"/>
       <FILE id="CNZFEo" name="SamplerAudioProcessor.cpp" compile="1" resource="0"

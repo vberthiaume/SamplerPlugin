@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DataModel.h"
+#include "../DataModel.h"
 
 namespace
 {
