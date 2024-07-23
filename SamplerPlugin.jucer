@@ -48,11 +48,10 @@
             file="Source/MpeSettingsComponent.h"/>
       <FILE id="RAQEYK" name="Sampler.cpp" compile="1" resource="0" file="Source/Sampler.cpp"/>
       <FILE id="gB007T" name="Sampler.h" compile="0" resource="0" file="Source/Sampler.h"/>
-      <FILE id="saslQe" name="SamplerPluginDemo.h" compile="0" resource="0"
-            file="Source/SamplerPluginDemo.h"/>
-    </GROUP>
-    <GROUP id="S1XBQB" name="Assets">
-      <FILE id="YeRlW1" name="DemoUtilities.h" compile="0" resource="0" file="Source/DemoUtilities.h"/>
+      <FILE id="CNZFEo" name="SamplerAudioProcessor.cpp" compile="1" resource="0"
+            file="Source/SamplerAudioProcessor.cpp"/>
+      <FILE id="saslQe" name="SamplerAudioProcessor.h" compile="0" resource="0"
+            file="Source/SamplerAudioProcessor.h"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>
