@@ -15,6 +15,10 @@
       <FILE id="QFMjoy" name="Helper.cpp" compile="1" resource="0" file="Source/Helper.cpp"/>
       <FILE id="Tqcklc" name="Helper.h" compile="0" resource="0" file="Source/Helper.h"/>
       <FILE id="d63Mff" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="p94dfm" name="MpeSettingsComponent.cpp" compile="1" resource="0"
+            file="Source/MpeSettingsComponent.cpp"/>
+      <FILE id="ILletk" name="MpeSettingsComponent.h" compile="0" resource="0"
+            file="Source/MpeSettingsComponent.h"/>
       <FILE id="RAQEYK" name="Sampler.cpp" compile="1" resource="0" file="Source/Sampler.cpp"/>
       <FILE id="gB007T" name="Sampler.h" compile="0" resource="0" file="Source/Sampler.h"/>
       <FILE id="saslQe" name="SamplerPluginDemo.h" compile="0" resource="0"
