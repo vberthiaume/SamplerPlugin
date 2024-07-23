@@ -10,6 +10,8 @@
     <GROUP id="{71A0D287-0DF2-05B0-3BFF-8269B0A74F18}" name="Source">
       <FILE id="O9sY94" name="Command.cpp" compile="1" resource="0" file="Source/Command.cpp"/>
       <FILE id="frLPCP" name="Command.h" compile="0" resource="0" file="Source/Command.h"/>
+      <FILE id="lwnwzP" name="DataModel.cpp" compile="1" resource="0" file="Source/DataModel.cpp"/>
+      <FILE id="iNoPr1" name="DataModel.h" compile="0" resource="0" file="Source/DataModel.h"/>
       <FILE id="QFMjoy" name="Helper.cpp" compile="1" resource="0" file="Source/Helper.cpp"/>
       <FILE id="Tqcklc" name="Helper.h" compile="0" resource="0" file="Source/Helper.h"/>
       <FILE id="d63Mff" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>

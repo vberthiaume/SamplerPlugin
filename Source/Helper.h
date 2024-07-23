@@ -5,6 +5,33 @@ using namespace juce;
 
 #include "Sampler.h"
 
+namespace IDs
+{
+#define DECLARE_ID(name) const juce::Identifier name (#name);
+
+DECLARE_ID (DATA_MODEL)
+DECLARE_ID (sampleReader)
+DECLARE_ID (centreFrequencyHz)
+DECLARE_ID (loopMode)
+DECLARE_ID (loopPointsSeconds)
+
+DECLARE_ID (MPE_SETTINGS)
+DECLARE_ID (synthVoices)
+DECLARE_ID (voiceStealingEnabled)
+DECLARE_ID (legacyModeEnabled)
+DECLARE_ID (mpeZoneLayout)
+DECLARE_ID (legacyFirstChannel)
+DECLARE_ID (legacyLastChannel)
+DECLARE_ID (legacyPitchbendRange)
+
+DECLARE_ID (VISIBLE_RANGE)
+DECLARE_ID (totalRange)
+DECLARE_ID (visibleRange)
+
+#undef DECLARE_ID
+
+} // namespace IDs
+
 template <typename Contents>
 class ReferenceCountingAdapter final : public ReferenceCountedObject
 {
