@@ -1,11 +1,7 @@
 #pragma once
 
-#include "juceHeader.h"
-using namespace juce;
-
 #include "Helper.h"
 
-//==============================================================================
 class VisibleRangeDataModel final : private ValueTree::Listener
 {
 public:

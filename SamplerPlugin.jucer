@@ -23,6 +23,8 @@
             file="Source/MpeSettingsComponent.cpp"/>
       <FILE id="ILletk" name="MpeSettingsComponent.h" compile="0" resource="0"
             file="Source/MpeSettingsComponent.h"/>
+      <FILE id="YZ7AZi" name="Ruler.cpp" compile="1" resource="0" file="Source/Ruler.cpp"/>
+      <FILE id="aqGr1V" name="Ruler.h" compile="0" resource="0" file="Source/Ruler.h"/>
       <FILE id="RAQEYK" name="Sampler.cpp" compile="1" resource="0" file="Source/Sampler.cpp"/>
       <FILE id="gB007T" name="Sampler.h" compile="0" resource="0" file="Source/Sampler.h"/>
       <FILE id="saslQe" name="SamplerPluginDemo.h" compile="0" resource="0"
