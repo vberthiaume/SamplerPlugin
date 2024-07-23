@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DataModel.h"
+#include "../DataModel.h"
 
 class Ruler final : public Component,
     private VisibleRangeDataModel::Listener
