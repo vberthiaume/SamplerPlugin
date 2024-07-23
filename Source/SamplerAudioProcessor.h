@@ -83,65 +83,12 @@ public:
     // These should be called from the GUI thread, and will block until the
     // command buffer has enough room to accept a command.
     void setSample (std::unique_ptr<AudioFormatReaderFactory> fact, AudioFormatManager& formatManager);
-
-    void setCentreFrequency (double centreFrequency)
-    {
-        commands.push ([centreFrequency] (SamplerAudioProcessor& proc)
-                       {
-                           auto loaded = proc.samplerSound;
-                           if (loaded != nullptr)
-                               loaded->setCentreFrequencyInHz (centreFrequency);
-                       });
-    }
-
-    void setLoopMode (LoopMode loopMode)
-    {
-        commands.push ([loopMode] (SamplerAudioProcessor& proc)
-                       {
-                           auto loaded = proc.samplerSound;
-                           if (loaded != nullptr)
-                               loaded->setLoopMode (loopMode);
-                       });
-    }
-
-    void setLoopPoints (Range<double> loopPoints)
-    {
-        commands.push ([loopPoints] (SamplerAudioProcessor& proc)
-                       {
-                           auto loaded = proc.samplerSound;
-                           if (loaded != nullptr)
-                               loaded->setLoopPointsInSeconds (loopPoints);
-                       });
-    }
-
-    void setMPEZoneLayout (MPEZoneLayout layout)
-    {
-        commands.push ([layout] (SamplerAudioProcessor& proc)
-                       {
-                           // setZoneLayout will lock internally, so we don't care too much about
-                           // ensuring that the layout doesn't get copied or destroyed on the
-                           // audio thread. If the audio glitches while updating midi settings
-                           // it doesn't matter too much.
-                           proc.synthesiser.setZoneLayout (layout);
-                       });
-    }
-
-    void setLegacyModeEnabled (int pitchbendRange, Range<int> channelRange)
-    {
-        commands.push ([pitchbendRange, channelRange] (SamplerAudioProcessor& proc)
-                       {
-                           proc.synthesiser.enableLegacyMode (pitchbendRange, channelRange);
-                       });
-    }
-
-    void setVoiceStealingEnabled (bool voiceStealingEnabled)
-    {
-        commands.push ([voiceStealingEnabled] (SamplerAudioProcessor& proc)
-                       {
-                           proc.synthesiser.setVoiceStealingEnabled (voiceStealingEnabled);
-                       });
-    }
-
+    void setCentreFrequency (double centreFrequency);
+    void setLoopMode (LoopMode loopMode);
+    void setLoopPoints (Range<double> loopPoints);
+    void setMPEZoneLayout (MPEZoneLayout layout);
+    void setLegacyModeEnabled (int pitchbendRange, Range<int> channelRange);
+    void setVoiceStealingEnabled (bool voiceStealingEnabled);
     void setNumberOfVoices (int numberOfVoices);
 
     // These accessors are just for an 'overview' and won't give the exact
@@ -155,7 +102,6 @@ public:
 
 private:
 
-    //==============================================================================
     template <typename Element>
     void process (AudioBuffer<Element>& buffer, MidiBuffer& midiMessages)
     {

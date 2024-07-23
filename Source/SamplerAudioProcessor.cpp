@@ -111,6 +111,64 @@ void SamplerAudioProcessor::setSample (std::unique_ptr<AudioFormatReaderFactory>
     }
 }
 
+void SamplerAudioProcessor::setCentreFrequency (double centreFrequency)
+{
+    commands.push ([centreFrequency](SamplerAudioProcessor& proc)
+                   {
+                       auto loaded = proc.samplerSound;
+                       if (loaded != nullptr)
+                           loaded->setCentreFrequencyInHz (centreFrequency);
+                   });
+}
+
+void SamplerAudioProcessor::setLoopMode (LoopMode loopMode)
+{
+    commands.push ([loopMode](SamplerAudioProcessor& proc)
+                   {
+                       auto loaded = proc.samplerSound;
+                       if (loaded != nullptr)
+                           loaded->setLoopMode (loopMode);
+                   });
+}
+
+void SamplerAudioProcessor::setLoopPoints (Range<double> loopPoints)
+{
+    commands.push ([loopPoints](SamplerAudioProcessor& proc)
+                   {
+                       auto loaded = proc.samplerSound;
+                       if (loaded != nullptr)
+                           loaded->setLoopPointsInSeconds (loopPoints);
+                   });
+}
+
+void SamplerAudioProcessor::setMPEZoneLayout (MPEZoneLayout layout)
+{
+    commands.push ([layout](SamplerAudioProcessor& proc)
+                   {
+                       // setZoneLayout will lock internally, so we don't care too much about
+                       // ensuring that the layout doesn't get copied or destroyed on the
+                       // audio thread. If the audio glitches while updating midi settings
+                       // it doesn't matter too much.
+                       proc.synthesiser.setZoneLayout (layout);
+                   });
+}
+
+void SamplerAudioProcessor::setLegacyModeEnabled (int pitchbendRange, Range<int> channelRange)
+{
+    commands.push ([pitchbendRange, channelRange](SamplerAudioProcessor& proc)
+                   {
+                       proc.synthesiser.enableLegacyMode (pitchbendRange, channelRange);
+                   });
+}
+
+void SamplerAudioProcessor::setVoiceStealingEnabled (bool voiceStealingEnabled)
+{
+    commands.push ([voiceStealingEnabled](SamplerAudioProcessor& proc)
+                   {
+                       proc.synthesiser.setVoiceStealingEnabled (voiceStealingEnabled);
+                   });
+}
+
 void SamplerAudioProcessor::setNumberOfVoices (int numberOfVoices)
 {
     // We don't want to call 'new' on the audio thread. Normally, we'd
