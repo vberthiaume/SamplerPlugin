@@ -4,7 +4,8 @@
 SamplerAudioProcessor::SamplerAudioProcessor ()
     : AudioProcessor (BusesProperties ().withOutput ("Output", AudioChannelSet::stereo (), true))
 {
-    if (auto inputStream = createAssetInputStream ("cello.wav"))
+    const juce::File celloWav ("C:/Users/barth/Documents/git/JUCE/examples/Assets/cello.wav");
+    if (auto inputStream = celloWav.createInputStream())
     {
         inputStream->readIntoMemoryBlock (mb);
         readerFactory.reset (new MemoryAudioFormatReaderFactory (mb.getData (), mb.getSize ()));

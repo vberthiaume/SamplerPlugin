@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    SamplerAudioEditor.cpp
-    Created: 23 Jul 2024 5:23:40pm
-    Author:  barth
-
-  ==============================================================================
-*/
-
 #include "SamplerAudioEditor.h"
 #include "../SamplerAudioProcessor.h"
 
