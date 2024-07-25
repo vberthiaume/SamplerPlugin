@@ -12,14 +12,11 @@ MainSamplerView::MainSamplerView (const DataModel& model, PlaybackPositionOverla
 
     auto setReader = [this](const FileChooser& fc)
         {
-            const auto result = fc.getResult ();
-
-            if (result != File ())
+            if (const auto result = fc.getResult (); result != File ())
             {
                 undoManager.beginNewTransaction ();
                 auto readerFactory = new FileAudioFormatReaderFactory (result);
-                dataModel.setSampleReader (std::unique_ptr<AudioFormatReaderFactory> (readerFactory),
-                                           &undoManager);
+                dataModel.setSampleReader (std::unique_ptr<AudioFormatReaderFactory> (readerFactory), &undoManager);
             }
         };
 

@@ -2,9 +2,7 @@
 
 #include "PlaybackPositionOverlay.h"
 #include "WaveformView.h"
-#include "LoopPointsOverlay.h"
 #include "Ruler.h"
-
 
 class WaveformEditor final : public Component,
     private DataModel::Listener

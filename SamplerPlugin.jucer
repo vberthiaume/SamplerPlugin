@@ -21,8 +21,6 @@
               file="Source/GUI/LoopPointMarker.cpp"/>
         <FILE id="DncFK5" name="LoopPointMarker.h" compile="0" resource="0"
               file="Source/GUI/LoopPointMarker.h"/>
-        <FILE id="UvwtVr" name="LoopPointsOverlay.cpp" compile="1" resource="0"
-              file="Source/GUI/LoopPointsOverlay.cpp"/>
         <FILE id="p1GfLh" name="MainSamplerView.cpp" compile="1" resource="0"
               file="Source/GUI/MainSamplerView.cpp"/>
         <FILE id="wil4y5" name="MainSamplerView.h" compile="0" resource="0"
