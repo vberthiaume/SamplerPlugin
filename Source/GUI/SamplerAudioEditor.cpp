@@ -26,8 +26,7 @@ SamplerAudioProcessorEditor::SamplerAudioProcessorEditor (SamplerAudioProcessor&
     addAndMakeVisible (tabbedComponent);
 
     auto lookFeel = dynamic_cast<LookAndFeel_V4*> (&getLookAndFeel ());
-    auto bg = lookFeel->getCurrentColourScheme ()
-        .getUIColour (LookAndFeel_V4::ColourScheme::UIColour::widgetBackground);
+    auto bg = lookFeel->getCurrentColourScheme ().getUIColour (LookAndFeel_V4::ColourScheme::UIColour::widgetBackground);
 
     tabbedComponent.addTab ("Sample Editor", bg, &mainSamplerView, false);
     tabbedComponent.addTab ("MPE Settings", bg, &settingsComponent, false);
@@ -53,45 +52,45 @@ SamplerAudioProcessorEditor::SamplerAudioProcessorEditor (SamplerAudioProcessor&
     setSize (640, 480);
 }
 
-inline void SamplerAudioProcessorEditor::sampleReaderChanged (std::shared_ptr<AudioFormatReaderFactory> value)
+void SamplerAudioProcessorEditor::sampleReaderChanged (std::shared_ptr<AudioFormatReaderFactory> value)
 {
     samplerAudioProcessor.setSample (value == nullptr ? nullptr : value->clone (),
                                      dataModel.getAudioFormatManager ());
 }
 
-inline void SamplerAudioProcessorEditor::centreFrequencyHzChanged (double value)
+void SamplerAudioProcessorEditor::centreFrequencyHzChanged (double value)
 {
     samplerAudioProcessor.setCentreFrequency (value);
 }
 
-inline void SamplerAudioProcessorEditor::loopPointsSecondsChanged (Range<double> value)
+void SamplerAudioProcessorEditor::loopPointsSecondsChanged (Range<double> value)
 {
     samplerAudioProcessor.setLoopPoints (value);
 }
 
-inline void SamplerAudioProcessorEditor::loopModeChanged (LoopMode value)
+void SamplerAudioProcessorEditor::loopModeChanged (LoopMode value)
 {
     samplerAudioProcessor.setLoopMode (value);
 }
 
-inline void SamplerAudioProcessorEditor::synthVoicesChanged (int value)
+void SamplerAudioProcessorEditor::synthVoicesChanged (int value)
 {
     samplerAudioProcessor.setNumberOfVoices (value);
 }
 
-inline void SamplerAudioProcessorEditor::voiceStealingEnabledChanged (bool value)
+void SamplerAudioProcessorEditor::voiceStealingEnabledChanged (bool value)
 {
     samplerAudioProcessor.setVoiceStealingEnabled (value);
 }
 
-inline void SamplerAudioProcessorEditor::setProcessorLegacyMode ()
+void SamplerAudioProcessorEditor::setProcessorLegacyMode ()
 {
     samplerAudioProcessor.setLegacyModeEnabled (mpeSettings.getLegacyPitchbendRange (),
                                                 Range<int> (mpeSettings.getLegacyFirstChannel (),
                                                             mpeSettings.getLegacyLastChannel ()));
 }
 
-inline void SamplerAudioProcessorEditor::setProcessorMPEMode ()
+void SamplerAudioProcessorEditor::setProcessorMPEMode ()
 {
     samplerAudioProcessor.setMPEZoneLayout (mpeSettings.getMPEZoneLayout ());
 }
