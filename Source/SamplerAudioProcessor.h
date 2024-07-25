@@ -101,7 +101,6 @@ public:
     float getPlaybackPosition (int voice) const { return playbackPositions.at ((size_t) voice); }
 
 private:
-
     template <typename Element>
     void process (AudioBuffer<Element>& buffer, MidiBuffer& midiMessages);
 

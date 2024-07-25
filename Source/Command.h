@@ -16,6 +16,8 @@ struct Command
     virtual void run (Proc& proc) = 0;
 };
 
+//=========================================================================
+
 template <typename Proc, typename Func>
 class TemplateCommand final : public Command<Proc>,
     private Func
@@ -29,6 +31,8 @@ public:
 
     void run (Proc& proc) override { (*this) (proc); }
 };
+
+//=========================================================================
 
 template <typename Proc>
 class CommandFifo final
@@ -75,4 +79,3 @@ private:
     std::vector<std::unique_ptr<Command<Proc>>> buffer;
     AbstractFifo abstractFifo;
 };
-

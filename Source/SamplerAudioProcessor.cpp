@@ -30,9 +30,8 @@ SamplerAudioProcessor::SamplerAudioProcessor ()
 
 AudioProcessorEditor* SamplerAudioProcessor::createEditor ()
 {
-    // This function will be called from the message thread. We lock the command
-    // queue to ensure that no messages are processed for the duration of this
-    // call.
+    // This function will be called from the message thread, so lock the command
+    // queue to ensure that no messages are processed while in here
     SpinLock::ScopedLockType lock (commandQueueMutex);
 
     ProcessorState state;
@@ -52,18 +51,16 @@ AudioProcessorEditor* SamplerAudioProcessor::createEditor ()
     return new SamplerAudioProcessorEditor (*this, std::move (state));
 }
 
-// These should be called from the GUI thread, and will block until the
-// command buffer has enough room to accept a command.
-
-void SamplerAudioProcessor::setSample (std::unique_ptr<AudioFormatReaderFactory> fact, AudioFormatManager& formatManager)
+void SamplerAudioProcessor::setSample (std::unique_ptr<AudioFormatReaderFactory> factory,
+                                       AudioFormatManager& formatManager)
 {
     class SetSampleCommand
     {
     public:
         SetSampleCommand (std::unique_ptr<AudioFormatReaderFactory> r,
                           std::unique_ptr<Sample> sampleIn,
-                          std::vector<std::unique_ptr<MPESamplerVoice>> newVoicesIn)
-            : readerFactory (std::move (r)),
+                          std::vector<std::unique_ptr<MPESamplerVoice>> newVoicesIn) :
+            readerFactory (std::move (r)),
             sample (std::move (sampleIn)),
             newVoices (std::move (newVoicesIn))
         {
@@ -98,15 +95,15 @@ void SamplerAudioProcessor::setSample (std::unique_ptr<AudioFormatReaderFactory>
     for (auto i = 0; i != maxVoices; ++i)
         newSamplerVoices.emplace_back (new MPESamplerVoice (loadedSamplerSound));
 
-    if (fact == nullptr)
+    if (factory == nullptr)
     {
-        commands.push (SetSampleCommand (std::move (fact),
+        commands.push (SetSampleCommand (std::move (factory),
                                          nullptr,
                                          std::move (newSamplerVoices)));
     }
-    else if (auto reader = fact->make (formatManager))
+    else if (auto reader = factory->make (formatManager))
     {
-        commands.push (SetSampleCommand (std::move (fact),
+        commands.push (SetSampleCommand (std::move (factory),
                                          std::unique_ptr<Sample> (new Sample (*reader, 10.0)),
                                          std::move (newSamplerVoices)));
     }
