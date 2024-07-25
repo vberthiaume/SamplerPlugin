@@ -41,9 +41,7 @@ SamplerAudioProcessorEditor::SamplerAudioProcessorEditor (SamplerAudioProcessor&
 
     dataModel.setSampleReader (std::move (state.readerFactory), nullptr);
 
-    dataModel.setLoopPointsSeconds (state.loopPointsSeconds, nullptr);
     dataModel.setCentreFrequencyHz (state.centreFrequencyHz, nullptr);
-    dataModel.setLoopMode (state.loopMode, nullptr);
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -61,16 +59,6 @@ void SamplerAudioProcessorEditor::sampleReaderChanged (std::shared_ptr<AudioForm
 void SamplerAudioProcessorEditor::centreFrequencyHzChanged (double value)
 {
     samplerAudioProcessor.setCentreFrequency (value);
-}
-
-void SamplerAudioProcessorEditor::loopPointsSecondsChanged (Range<double> value)
-{
-    samplerAudioProcessor.setLoopPoints (value);
-}
-
-void SamplerAudioProcessorEditor::loopModeChanged (LoopMode value)
-{
-    samplerAudioProcessor.setLoopMode (value);
 }
 
 void SamplerAudioProcessorEditor::synthVoicesChanged (int value)

@@ -26,9 +26,7 @@ struct ProcessorState
     bool voiceStealingEnabled;
     MPEZoneLayout mpeZoneLayout;
     std::unique_ptr<AudioFormatReaderFactory> readerFactory;
-    Range<double> loopPointsSeconds;
     double centreFrequencyHz;
-    LoopMode loopMode;
 };
 
 //=====================================================
@@ -84,8 +82,6 @@ public:
     // command buffer has enough room to accept a command.
     void setSample (std::unique_ptr<AudioFormatReaderFactory> fact, AudioFormatManager& formatManager);
     void setCentreFrequency (double centreFrequency);
-    void setLoopMode (LoopMode loopMode);
-    void setLoopPoints (Range<double> loopPoints);
     void setMPEZoneLayout (MPEZoneLayout layout);
     void setLegacyModeEnabled (int pitchbendRange, Range<int> channelRange);
     void setVoiceStealingEnabled (bool voiceStealingEnabled);

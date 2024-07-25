@@ -12,19 +12,16 @@ class WaveformEditor final : public Component,
 public:
     WaveformEditor (const DataModel& model,
                     PlaybackPositionOverlay::Provider provider,
-                    UndoManager& undoManager)
+                    UndoManager& /*undoManager*/)
         : dataModel (model),
         waveformView (model, visibleRange),
         playbackOverlay (visibleRange, std::move (provider)),
-        loopPoints (dataModel, visibleRange, undoManager),
         ruler (visibleRange)
     {
         dataModel.addListener (*this);
 
         addAndMakeVisible (waveformView);
         addAndMakeVisible (playbackOverlay);
-        addChildComponent (loopPoints);
-        loopPoints.setAlwaysOnTop (true);
 
         waveformView.toBack ();
 
@@ -38,12 +35,6 @@ private:
         ruler.setBounds (bounds.removeFromTop (25));
         waveformView.setBounds (bounds);
         playbackOverlay.setBounds (bounds);
-        loopPoints.setBounds (bounds);
-    }
-
-    void loopModeChanged (LoopMode value) override
-    {
-        loopPoints.setVisible (value != LoopMode::none);
     }
 
     void sampleReaderChanged (std::shared_ptr<AudioFormatReaderFactory>) override
@@ -57,7 +48,6 @@ private:
     VisibleRangeDataModel visibleRange;
     WaveformView waveformView;
     PlaybackPositionOverlay playbackOverlay;
-    LoopPointsOverlay loopPoints;
     Ruler ruler;
 };
 

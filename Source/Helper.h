@@ -12,8 +12,6 @@ namespace IDs
 DECLARE_ID (DATA_MODEL)
 DECLARE_ID (sampleReader)
 DECLARE_ID (centreFrequencyHz)
-DECLARE_ID (loopMode)
-DECLARE_ID (loopPointsSeconds)
 
 DECLARE_ID (MPE_SETTINGS)
 DECLARE_ID (synthVoices)
@@ -146,20 +144,6 @@ private:
 
 namespace juce
 {
-
-template<>
-struct VariantConverter<LoopMode>
-{
-    static LoopMode fromVar (const var& v)
-    {
-        return static_cast<LoopMode> (int (v));
-    }
-
-    static var toVar (LoopMode loopMode)
-    {
-        return static_cast<int> (loopMode);
-    }
-};
 
 template <typename Wrapped>
 struct GenericVariantConverter

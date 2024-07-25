@@ -306,8 +306,6 @@ public:
         virtual ~Listener () noexcept = default;
         virtual void sampleReaderChanged (std::shared_ptr<AudioFormatReaderFactory>) {}
         virtual void centreFrequencyHzChanged (double) {}
-        virtual void loopModeChanged (LoopMode) {}
-        virtual void loopPointsSecondsChanged (Range<double>) {}
     };
 
     explicit DataModel (AudioFormatManager& audioFormatManagerIn)
@@ -319,9 +317,7 @@ public:
         : audioFormatManager (&audioFormatManagerIn),
         valueTree (vt),
         sampleReader (valueTree, IDs::sampleReader, nullptr),
-        centreFrequencyHz (valueTree, IDs::centreFrequencyHz, nullptr),
-        loopMode (valueTree, IDs::loopMode, nullptr, LoopMode::none),
-        loopPointsSeconds (valueTree, IDs::loopPointsSeconds, nullptr)
+        centreFrequencyHz (valueTree, IDs::centreFrequencyHz, nullptr)
     {
         jassert (valueTree.hasType (IDs::DATA_MODEL));
         valueTree.addListener (this);
@@ -348,8 +344,6 @@ public:
                           UndoManager* undoManager)
     {
         sampleReader.setValue (std::move (readerFactory), undoManager);
-        setLoopPointsSeconds (Range<double> (0, getSampleLengthSeconds ()).constrainRange (loopPointsSeconds),
-                              undoManager);
     }
 
     double getSampleLengthSeconds () const
@@ -368,27 +362,6 @@ public:
     void setCentreFrequencyHz (double value, UndoManager* undoManager)
     {
         centreFrequencyHz.setValue (Range<double> (20, 20000).clipValue (value),
-                                    undoManager);
-    }
-
-    LoopMode getLoopMode () const
-    {
-        return loopMode;
-    }
-
-    void setLoopMode (LoopMode value, UndoManager* undoManager)
-    {
-        loopMode.setValue (value, undoManager);
-    }
-
-    Range<double> getLoopPointsSeconds () const
-    {
-        return loopPointsSeconds;
-    }
-
-    void setLoopPointsSeconds (Range<double> value, UndoManager* undoManager)
-    {
-        loopPointsSeconds.setValue (Range<double> (0, getSampleLengthSeconds ()).constrainRange (value),
                                     undoManager);
     }
 
@@ -431,16 +404,6 @@ private:
             centreFrequencyHz.forceUpdateOfCachedValue ();
             listenerList.call ([this](Listener& l) { l.centreFrequencyHzChanged (centreFrequencyHz); });
         }
-        else if (property == IDs::loopMode)
-        {
-            loopMode.forceUpdateOfCachedValue ();
-            listenerList.call ([this](Listener& l) { l.loopModeChanged (loopMode); });
-        }
-        else if (property == IDs::loopPointsSeconds)
-        {
-            loopPointsSeconds.forceUpdateOfCachedValue ();
-            listenerList.call ([this](Listener& l) { l.loopPointsSecondsChanged (loopPointsSeconds); });
-        }
     }
 
     void valueTreeChildAdded (ValueTree&, ValueTree&)      override {}
@@ -454,8 +417,6 @@ private:
 
     CachedValue<std::shared_ptr<AudioFormatReaderFactory>> sampleReader;
     CachedValue<double> centreFrequencyHz;
-    CachedValue<LoopMode> loopMode;
-    CachedValue<Range<double>> loopPointsSeconds;
 
     ListenerList<Listener> listenerList;
 };

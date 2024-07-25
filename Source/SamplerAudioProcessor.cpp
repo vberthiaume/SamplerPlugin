@@ -19,8 +19,6 @@ SamplerAudioProcessor::SamplerAudioProcessor ()
 
     auto sound = samplerSound;
     auto sample = std::unique_ptr<Sample> (new Sample (*reader, 10.0));
-    auto lengthInSeconds = sample->getLength () / sample->getSampleRate ();
-    sound->setLoopPointsInSeconds ({ lengthInSeconds * 0.1, lengthInSeconds * 0.9 });
     sound->setSample (std::move (sample));
 
     // Start with the max number of voices
@@ -44,9 +42,7 @@ AudioProcessorEditor* SamplerAudioProcessor::createEditor ()
     state.readerFactory = readerFactory == nullptr ? nullptr : readerFactory->clone ();
 
     auto sound = samplerSound;
-    state.loopPointsSeconds = sound->getLoopPointsInSeconds ();
     state.centreFrequencyHz = sound->getCentreFrequencyInHz ();
-    state.loopMode = sound->getLoopMode ();
 
     return new SamplerAudioProcessorEditor (*this, std::move (state));
 }
@@ -116,26 +112,6 @@ void SamplerAudioProcessor::setCentreFrequency (double centreFrequency)
                        auto loaded = proc.samplerSound;
                        if (loaded != nullptr)
                            loaded->setCentreFrequencyInHz (centreFrequency);
-                   });
-}
-
-void SamplerAudioProcessor::setLoopMode (LoopMode loopMode)
-{
-    commands.push ([loopMode](SamplerAudioProcessor& proc)
-                   {
-                       auto loaded = proc.samplerSound;
-                       if (loaded != nullptr)
-                           loaded->setLoopMode (loopMode);
-                   });
-}
-
-void SamplerAudioProcessor::setLoopPoints (Range<double> loopPoints)
-{
-    commands.push ([loopPoints](SamplerAudioProcessor& proc)
-                   {
-                       auto loaded = proc.samplerSound;
-                       if (loaded != nullptr)
-                           loaded->setLoopPointsInSeconds (loopPoints);
                    });
 }
 

@@ -49,18 +49,12 @@ private:
         jassert (files.size () == 1);
         undoManager.beginNewTransaction ();
         auto r = new FileAudioFormatReaderFactory (files[0]);
-        dataModel.setSampleReader (std::unique_ptr<AudioFormatReaderFactory> (r),
-                                   &undoManager);
-
+        dataModel.setSampleReader (std::unique_ptr<AudioFormatReaderFactory> (r), &undoManager);
     }
 
     void sampleReaderChanged (std::shared_ptr<AudioFormatReaderFactory> value) override;
 
     void centreFrequencyHzChanged (double value) override;
-
-    void loopPointsSecondsChanged (Range<double> value) override;
-
-    void loopModeChanged (LoopMode value) override;
 
     void synthVoicesChanged (int value) override;
 
