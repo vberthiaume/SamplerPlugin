@@ -108,7 +108,7 @@ private:
     // with the real state of the processor.
     SpinLock commandQueueMutex;
 
-    enum { maxVoices = 20 };
+    enum { maxVoices = 200 };
 
     // This is used for visualising the current playback position of each voice.
     std::array<std::atomic<float>, maxVoices> playbackPositions;

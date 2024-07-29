@@ -194,6 +194,7 @@ private:
 };
 
 //==============================================================================
+
 class DataModel final : private ValueTree::Listener
 {
 public:
@@ -317,4 +318,3 @@ private:
 
     ListenerList<Listener> listenerList;
 };
-
