@@ -9,31 +9,18 @@
   <MAINGROUP id="GyqG2V" name="SamplerPlugin">
     <GROUP id="{71A0D287-0DF2-05B0-3BFF-8269B0A74F18}" name="Source">
       <GROUP id="{FB2FDEEA-D2B9-910C-7E08-B4FBBB3346B5}" name="GUI">
+        <FILE id="acb3cu" name="SamplerAudioEditor.h" compile="0" resource="0"
+              file="Source/GUI/SamplerAudioEditor.h"/>
+        <FILE id="Ae0c5R" name="SamplerAudioEditor.cpp" compile="1" resource="0"
+              file="Source/GUI/SamplerAudioEditor.cpp"/>
         <FILE id="vH2Vb3" name="MpeSettingsComponent.cpp" compile="1" resource="0"
               file="Source/GUI/MpeSettingsComponent.cpp"/>
         <FILE id="dwHlyA" name="MpeSettingsComponent.h" compile="0" resource="0"
               file="Source/GUI/MpeSettingsComponent.h"/>
-        <FILE id="V7Abjl" name="SamplerAudioEditor.cpp" compile="1" resource="0"
-              file="Source/GUI/SamplerAudioEditor.cpp"/>
-        <FILE id="Eux0lZ" name="SamplerAudioEditor.h" compile="0" resource="0"
-              file="Source/GUI/SamplerAudioEditor.h"/>
-        <FILE id="bN5IU8" name="LoopPointMarker.cpp" compile="1" resource="0"
-              file="Source/GUI/LoopPointMarker.cpp"/>
-        <FILE id="DncFK5" name="LoopPointMarker.h" compile="0" resource="0"
-              file="Source/GUI/LoopPointMarker.h"/>
         <FILE id="p1GfLh" name="MainSamplerView.cpp" compile="1" resource="0"
               file="Source/GUI/MainSamplerView.cpp"/>
         <FILE id="wil4y5" name="MainSamplerView.h" compile="0" resource="0"
               file="Source/GUI/MainSamplerView.h"/>
-        <FILE id="o2OFF2" name="PlaybackPositionOverlay.cpp" compile="1" resource="0"
-              file="Source/GUI/PlaybackPositionOverlay.cpp"/>
-        <FILE id="LInfyW" name="PlaybackPositionOverlay.h" compile="0" resource="0"
-              file="Source/GUI/PlaybackPositionOverlay.h"/>
-        <FILE id="AJHZCf" name="Ruler.cpp" compile="1" resource="0" file="Source/GUI/Ruler.cpp"/>
-        <FILE id="jDUsT4" name="Ruler.h" compile="0" resource="0" file="Source/GUI/Ruler.h"/>
-        <FILE id="K8S4cN" name="WaveformView.cpp" compile="1" resource="0"
-              file="Source/GUI/WaveformView.cpp"/>
-        <FILE id="EWIe6A" name="WaveformView.h" compile="0" resource="0" file="Source/GUI/WaveformView.h"/>
       </GROUP>
       <FILE id="O9sY94" name="Command.cpp" compile="1" resource="0" file="Source/Command.cpp"/>
       <FILE id="frLPCP" name="Command.h" compile="0" resource="0" file="Source/Command.h"/>
