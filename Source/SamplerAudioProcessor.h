@@ -15,8 +15,6 @@
 #include "GUI/LoopPointMarker.h"
 #include "GUI/MainSamplerView.h"
 
-std::unique_ptr<InputStream> createAssetInputStream (const char* resourcePath);
-
 struct ProcessorState
 {
     int synthVoices;
@@ -155,5 +153,4 @@ void SamplerAudioProcessor::process (AudioBuffer<Element>& buffer, MidiBuffer& m
         else
             playbackPositions[(size_t) i] = 0.0f;
     }
-
 }
