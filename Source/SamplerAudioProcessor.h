@@ -11,9 +11,7 @@
 #include <mutex>
 
 #include "Command.h"
-#include "GUI/MpeSettingsComponent.h"
-#include "GUI/LoopPointMarker.h"
-#include "GUI/MainSamplerView.h"
+#include "Helper.h"
 
 struct ProcessorState
 {
