@@ -11,10 +11,9 @@ using namespace juce;
 class Sample final
 {
 public:
-    Sample (AudioFormatReader& source, double maxSampleLengthSecs)
-        : sourceSampleRate (source.sampleRate),
-        length (jmin (int (source.lengthInSamples),
-                      int (maxSampleLengthSecs* sourceSampleRate))),
+    Sample (AudioFormatReader& source, double maxSampleLengthSecs) :
+        sourceSampleRate (source.sampleRate),
+        length (jmin (int (source.lengthInSamples), int (maxSampleLengthSecs* sourceSampleRate))),
         data (jmin (2, int (source.numChannels)), length + 4)
     {
         if (length == 0)
@@ -52,7 +51,6 @@ public:
         return sample.get ();
     }
 
-
     void setCentreFrequencyInHz (double centre)
     {
         centreFrequencyInHz = centre;
@@ -78,40 +76,11 @@ public:
         jassert (samplerSound != nullptr);
     }
 
-    void noteStarted () override
-    {
-        jassert (currentlyPlayingNote.isValid ());
-        jassert (currentlyPlayingNote.keyState == MPENote::keyDown
-                 || currentlyPlayingNote.keyState == MPENote::keyDownAndSustained);
+    void noteStarted () override;
 
-        level.setTargetValue (currentlyPlayingNote.noteOnVelocity.asUnsignedFloat ());
-        frequency.setTargetValue (currentlyPlayingNote.getFrequencyInHertz ());
+    void noteStopped (bool allowTailOff) override;
 
-        for (auto smoothed : { &level, &frequency })
-            smoothed->reset (currentSampleRate, smoothingLengthInSeconds);
-
-        previousPressure = currentlyPlayingNote.pressure.asUnsignedFloat ();
-        currentSamplePos = 0.0;
-        tailOff = 0.0;
-    }
-
-    void noteStopped (bool allowTailOff) override
-    {
-        jassert (currentlyPlayingNote.keyState == MPENote::off);
-
-        if (allowTailOff && approximatelyEqual (tailOff, 0.0))
-            tailOff = 1.0;
-        else
-            stopNote ();
-    }
-
-    void notePressureChanged () override
-    {
-        const auto currentPressure = static_cast<double> (currentlyPlayingNote.pressure.asUnsignedFloat ());
-        const auto deltaPressure = currentPressure - previousPressure;
-        level.setTargetValue (jlimit (0.0, 1.0, level.getCurrentValue () + deltaPressure));
-        previousPressure = currentPressure;
-    }
+    void notePressureChanged () override;
 
     void notePitchbendChanged () override
     {
@@ -142,88 +111,16 @@ public:
 
 private:
     template <typename Element>
-    void render (AudioBuffer<Element>& outputBuffer, int startSample, int numSamples)
-    {
-        jassert (samplerSound->getSample () != nullptr);
-
-        auto& data = samplerSound->getSample ()->getBuffer ();
-
-        auto inL = data.getReadPointer (0);
-        auto inR = data.getNumChannels () > 1 ? data.getReadPointer (1) : nullptr;
-
-        auto outL = outputBuffer.getWritePointer (0, startSample);
-
-        if (outL == nullptr)
-            return;
-
-        auto outR = outputBuffer.getNumChannels () > 1 ? outputBuffer.getWritePointer (1, startSample)
-            : nullptr;
-
-        size_t writePos = 0;
-
-        while (--numSamples >= 0 && renderNextSample (inL, inR, outL, outR, writePos))
-            writePos += 1;
-    }
+    void render (AudioBuffer<Element>& outputBuffer, int startSample, int numSamples);
 
     template <typename Element>
     bool renderNextSample (const float* inL,
                            const float* inR,
                            Element* outL,
                            Element* outR,
-                           size_t writePos)
-    {
-        auto currentLevel = level.getNextValue ();
-        auto currentFrequency = frequency.getNextValue ();
+                           size_t writePos);
 
-        if (isTailingOff ())
-        {
-            currentLevel *= tailOff;
-            tailOff *= 0.9999;
-
-            if (tailOff < 0.005)
-            {
-                stopNote ();
-                return false;
-            }
-        }
-
-        auto pos = (int) currentSamplePos;
-        auto nextPos = pos + 1;
-        auto alpha = (Element) (currentSamplePos - pos);
-        auto invAlpha = 1.0f - alpha;
-
-        // just using a very simple linear interpolation here..
-        auto l = static_cast<Element> (currentLevel * (inL[pos] * invAlpha + inL[nextPos] * alpha));
-        auto r = static_cast<Element> ((inR != nullptr) ? currentLevel * (inR[pos] * invAlpha + inR[nextPos] * alpha)
-                                       : l);
-
-        if (outR != nullptr)
-        {
-            outL[writePos] += l;
-            outR[writePos] += r;
-        }
-        else
-        {
-            outL[writePos] += (l + r) * 0.5f;
-        }
-
-        currentSamplePos = getNextState (currentFrequency);
-
-        if (currentSamplePos > samplerSound->getSample ()->getLength ())
-        {
-            stopNote ();
-            return false;
-        }
-
-        return true;
-    }
-
-    double getSampleValue () const;
-
-    bool isTailingOff () const
-    {
-        return ! approximatelyEqual (tailOff, 0.0);
-    }
+    bool isTailingOff () const { return ! approximatelyEqual (tailOff, 0.0); }
 
     void stopNote ()
     {
@@ -248,3 +145,78 @@ private:
     double tailOff { 0 };
     double smoothingLengthInSeconds { 0.01 };
 };
+
+//=================================================================================
+
+template<typename Element>
+void MPESamplerVoice::render (AudioBuffer<Element>& outputBuffer, int startSample, int numSamples)
+{
+    jassert (samplerSound->getSample () != nullptr);
+
+    auto& data = samplerSound->getSample ()->getBuffer ();
+
+    auto inL = data.getReadPointer (0);
+    auto inR = data.getNumChannels () > 1 ? data.getReadPointer (1) : nullptr;
+
+    auto outL = outputBuffer.getWritePointer (0, startSample);
+
+    if (outL == nullptr)
+        return;
+
+    auto outR = outputBuffer.getNumChannels () > 1 ? outputBuffer.getWritePointer (1, startSample)
+        : nullptr;
+
+    size_t writePos = 0;
+
+    while (--numSamples >= 0 && renderNextSample (inL, inR, outL, outR, writePos))
+        writePos += 1;
+}
+
+template<typename Element>
+bool MPESamplerVoice::renderNextSample (const float* inL, const float* inR, Element* outL, Element* outR, size_t writePos)
+{
+    auto currentLevel = level.getNextValue ();
+    auto currentFrequency = frequency.getNextValue ();
+
+    if (isTailingOff ())
+    {
+        currentLevel *= tailOff;
+        tailOff *= 0.9999;
+
+        if (tailOff < 0.005)
+        {
+            stopNote ();
+            return false;
+        }
+    }
+
+    auto pos = (int) currentSamplePos;
+    auto nextPos = pos + 1;
+    auto alpha = (Element) (currentSamplePos - pos);
+    auto invAlpha = 1.0f - alpha;
+
+    // just using a very simple linear interpolation here..
+    auto l = static_cast<Element> (currentLevel * (inL[pos] * invAlpha + inL[nextPos] * alpha));
+    auto r = static_cast<Element> ((inR != nullptr) ? currentLevel * (inR[pos] * invAlpha + inR[nextPos] * alpha)
+                                   : l);
+
+    if (outR != nullptr)
+    {
+        outL[writePos] += l;
+        outR[writePos] += r;
+    }
+    else
+    {
+        outL[writePos] += (l + r) * 0.5f;
+    }
+
+    currentSamplePos = getNextState (currentFrequency);
+
+    if (currentSamplePos > samplerSound->getSample ()->getLength ())
+    {
+        stopNote ();
+        return false;
+    }
+
+    return true;
+}

@@ -7,8 +7,8 @@ SamplerAudioProcessor::SamplerAudioProcessor ()
     const juce::File celloWav ("C:/Users/barth/Documents/git/JUCE/examples/Assets/cello.wav");
     if (auto inputStream = celloWav.createInputStream())
     {
-        inputStream->readIntoMemoryBlock (mb);
-        readerFactory.reset (new MemoryAudioFormatReaderFactory (mb.getData (), mb.getSize ()));
+        inputStream->readIntoMemoryBlock (memoryBlock);
+        readerFactory.reset (new MemoryAudioFormatReaderFactory (memoryBlock.getData (), memoryBlock.getSize ()));
     }
 
     // Set up initial sample, which we load from a binary resource

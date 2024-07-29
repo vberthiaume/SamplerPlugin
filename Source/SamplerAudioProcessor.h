@@ -98,7 +98,7 @@ private:
 
     CommandFifo<SamplerAudioProcessor> commands;
 
-    MemoryBlock mb;
+    MemoryBlock memoryBlock;
     std::unique_ptr<AudioFormatReaderFactory> readerFactory;
     std::shared_ptr<MPESamplerSound> samplerSound = std::make_shared<MPESamplerSound>();
     MPESynthesiser synthesiser;
