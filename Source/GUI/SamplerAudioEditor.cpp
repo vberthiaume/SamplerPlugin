@@ -4,19 +4,7 @@
 SamplerAudioProcessorEditor::SamplerAudioProcessorEditor (SamplerAudioProcessor& p, ProcessorState state)
     : AudioProcessorEditor (&p),
     samplerAudioProcessor (p),
-    mainSamplerView (dataModel,
-                     [&p]
-                     {
-                         std::vector<float> ret;
-                         auto voices = p.getNumVoices ();
-                         ret.reserve ((size_t) voices);
-
-                         for (auto i = 0; i != voices; ++i)
-                             ret.emplace_back (p.getPlaybackPosition (i));
-
-                         return ret;
-                     },
-                     undoManager)
+    mainSamplerView (dataModel, undoManager)
 {
     dataModel.addListener (*this);
     mpeSettings.addListener (*this);

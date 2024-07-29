@@ -1,6 +1,6 @@
 #include "MainSamplerView.h"
 
-MainSamplerView::MainSamplerView (const DataModel& model, PlaybackPositionOverlay::Provider provider, UndoManager& um)
+MainSamplerView::MainSamplerView (const DataModel& model, UndoManager& um)
     : dataModel (model),
     undoManager (um)
 {

@@ -31,10 +31,6 @@
               file="Source/GUI/PlaybackPositionOverlay.h"/>
         <FILE id="AJHZCf" name="Ruler.cpp" compile="1" resource="0" file="Source/GUI/Ruler.cpp"/>
         <FILE id="jDUsT4" name="Ruler.h" compile="0" resource="0" file="Source/GUI/Ruler.h"/>
-        <FILE id="sJAgo2" name="WaveformEditor.cpp" compile="1" resource="0"
-              file="Source/GUI/WaveformEditor.cpp"/>
-        <FILE id="eKgyB3" name="WaveformEditor.h" compile="0" resource="0"
-              file="Source/GUI/WaveformEditor.h"/>
         <FILE id="K8S4cN" name="WaveformView.cpp" compile="1" resource="0"
               file="Source/GUI/WaveformView.cpp"/>
         <FILE id="EWIe6A" name="WaveformView.h" compile="0" resource="0" file="Source/GUI/WaveformView.h"/>

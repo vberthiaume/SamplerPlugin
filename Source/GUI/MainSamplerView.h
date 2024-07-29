@@ -1,16 +1,13 @@
 #pragma once
 
-#include "WaveformEditor.h"
+#include "../DataModel.h"
 
 class MainSamplerView final : public Component,
                               private DataModel::Listener,
                               private ChangeListener
 {
 public:
-    MainSamplerView (const DataModel& model,
-                     PlaybackPositionOverlay::Provider provider,
-                     UndoManager& um);
-
+    MainSamplerView (const DataModel& model, UndoManager& um);
     ~MainSamplerView () override { undoManager.removeChangeListener (this); }
 
 private:
