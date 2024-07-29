@@ -11,7 +11,7 @@
 #include <mutex>
 
 #include "Command.h"
-#include "Helper.h"
+#include "DSP/AudioFormatReaderFactory.h"
 
 struct ProcessorState
 {

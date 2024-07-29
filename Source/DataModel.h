@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Helper.h"
+#include "DSP/AudioFormatReaderFactory.h"
 
 class MPESettingsDataModel final : private ValueTree::Listener
 {

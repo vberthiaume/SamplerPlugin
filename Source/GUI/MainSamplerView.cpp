@@ -1,5 +1,7 @@
 #include "MainSamplerView.h"
 
+#include "../DSP/AudioFormatReaderFactory.h"
+
 MainSamplerView::MainSamplerView (const DataModel& model, UndoManager& um)
     : dataModel (model),
     undoManager (um)
