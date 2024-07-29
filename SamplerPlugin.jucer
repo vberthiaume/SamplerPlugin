@@ -9,6 +9,8 @@
   <MAINGROUP id="GyqG2V" name="SamplerPlugin">
     <GROUP id="{71A0D287-0DF2-05B0-3BFF-8269B0A74F18}" name="Source">
       <GROUP id="{944724B9-B974-4DBE-B921-081D5988A9EB}" name="DSP">
+        <FILE id="HcIw0b" name="Sampler.cpp" compile="1" resource="0" file="Source/DSP/Sampler.cpp"/>
+        <FILE id="OtM8xe" name="Sampler.h" compile="0" resource="0" file="Source/DSP/Sampler.h"/>
         <FILE id="MaYprU" name="AudioFormatReaderFactory.cpp" compile="1" resource="0"
               file="Source/DSP/AudioFormatReaderFactory.cpp"/>
         <FILE id="JcWthR" name="AudioFormatReaderFactory.h" compile="0" resource="0"
@@ -35,8 +37,6 @@
       <FILE id="QFMjoy" name="Helper.cpp" compile="1" resource="0" file="Source/Helper.cpp"/>
       <FILE id="Tqcklc" name="Helper.h" compile="0" resource="0" file="Source/Helper.h"/>
       <FILE id="d63Mff" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
-      <FILE id="RAQEYK" name="Sampler.cpp" compile="1" resource="0" file="Source/Sampler.cpp"/>
-      <FILE id="gB007T" name="Sampler.h" compile="0" resource="0" file="Source/Sampler.h"/>
       <FILE id="CNZFEo" name="SamplerAudioProcessor.cpp" compile="1" resource="0"
             file="Source/SamplerAudioProcessor.cpp"/>
       <FILE id="saslQe" name="SamplerAudioProcessor.h" compile="0" resource="0"

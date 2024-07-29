@@ -3,7 +3,7 @@
 #include "juceHeader.h"
 using namespace juce;
 
-#include "Sampler.h"
+#include "DSP/Sampler.h"
 
 namespace IDs
 {
