@@ -19,12 +19,13 @@ SamplerAudioProcessor::SamplerAudioProcessor ()
     const auto reader = readerFactory->make (manager);
     jassert (reader != nullptr); // Failed to load resource!
 
-    //copying the shared pointer increases the reference count,
-    //and when this sound copy is deleted it'll decrease it
+    //Read the sample into an OurSample, and move our sample to our SamplerSound
+    //copying the shared samplerSound pointer increases its reference count,
+    //which will be decreased when the soundCopy is deleted
     auto sound = samplerSound;
     sound->setSample (std::make_unique<OurSample>(*reader, 10.0));
 
-    // Start with the max number of voices
+    //create maxVoices, which all use copies of our shared pointer sound
     for (auto i = 0; i != maxVoices; ++i)
         synthesiser.addVoice (new OurSamplerVoice (sound));
 }

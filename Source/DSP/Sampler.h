@@ -4,22 +4,21 @@
 using namespace juce;
 
 //==============================================================================
-// Represents the constant parts of an audio sample: its name, sample rate,
-// length, and the audio sample data itself.
-// Samples might be pretty big, so we'll keep shared_ptrs to them most of the
-// time, to reduce duplication and copying.
+// Represents the constant parts of an audio sample: sample rate, length, and a copy of
+// the audio data itself, stored in an AudioBuffer. OurSamples might be pretty big,
+// so we'll keep shared_ptrs to them most of the time, to reduce duplication and copying.
 class OurSample final
 {
 public:
-    OurSample (AudioFormatReader& source, double maxSampleLengthSecs) :
-        sourceSampleRate (source.sampleRate),
-        length (jmin (int (source.lengthInSamples), int (maxSampleLengthSecs* sourceSampleRate))),
-        data (jmin (2, int (source.numChannels)), length + 4)
+    OurSample (AudioFormatReader& reader, double maxSampleLengthSecs) :
+        sourceSampleRate (reader.sampleRate),
+        length (jmin (int (reader.lengthInSamples), int (maxSampleLengthSecs* sourceSampleRate))),
+        data (jmin (2, int (reader.numChannels)), length + 4)
     {
         if (length == 0)
             throw std::runtime_error ("Unable to load sample");
 
-        source.read (&data, 0, length + 4, 0, true, true);
+        reader.read (&data, 0, length + 4, 0, true, true);
     }
 
     double getSampleRate () const { return sourceSampleRate; }
@@ -36,8 +35,7 @@ private:
 // A class which contains all the information related to sample-playback, such
 // as sample data, loop points, and loop kind.
 // It is expected that multiple sampler voices will maintain pointers to a
-// single instance of this class, to avoid redundant duplication of sample
-// data in memory.
+// single instance of this class, to avoid redundant duplication of sample data in memory.
 class OurSamplerSound final
 {
 public:
@@ -71,7 +69,7 @@ class OurSamplerVoice final : public MPESynthesiserVoice
 {
 public:
     explicit OurSamplerVoice (std::shared_ptr<const OurSamplerSound> sound) :
-        samplerSound (std::move (sound))
+        samplerSound (std::move (sound))    //moving the shared pointer param into our member is faster than copying it
     {
         jassert (samplerSound != nullptr);
     }
