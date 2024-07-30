@@ -8,10 +8,10 @@ using namespace juce;
 // length, and the audio sample data itself.
 // Samples might be pretty big, so we'll keep shared_ptrs to them most of the
 // time, to reduce duplication and copying.
-class Sample final
+class OurSample final
 {
 public:
-    Sample (AudioFormatReader& source, double maxSampleLengthSecs) :
+    OurSample (AudioFormatReader& source, double maxSampleLengthSecs) :
         sourceSampleRate (source.sampleRate),
         length (jmin (int (source.lengthInSamples), int (maxSampleLengthSecs* sourceSampleRate))),
         data (jmin (2, int (source.numChannels)), length + 4)
@@ -38,15 +38,15 @@ private:
 // It is expected that multiple sampler voices will maintain pointers to a
 // single instance of this class, to avoid redundant duplication of sample
 // data in memory.
-class MPESamplerSound final
+class OurSamplerSound final
 {
 public:
-    void setSample (std::unique_ptr<Sample> value)
+    void setSample (std::unique_ptr<OurSample> value)
     {
         sample = std::move (value);
     }
 
-    Sample* getSample () const
+    OurSample* getSample () const
     {
         return sample.get ();
     }
@@ -62,16 +62,16 @@ public:
     }
 
 private:
-    std::unique_ptr<Sample> sample;
+    std::unique_ptr<OurSample> sample;
     double centreFrequencyInHz { 440.0 };
 };
 
 //==============================================================================
-class MPESamplerVoice final : public MPESynthesiserVoice
+class OurSamplerVoice final : public MPESynthesiserVoice
 {
 public:
-    explicit MPESamplerVoice (std::shared_ptr<const MPESamplerSound> sound)
-        : samplerSound (std::move (sound))
+    explicit OurSamplerVoice (std::shared_ptr<const OurSamplerSound> sound) :
+        samplerSound (std::move (sound))
     {
         jassert (samplerSound != nullptr);
     }
@@ -137,7 +137,7 @@ private:
         return nextSamplePos;
     }
 
-    std::shared_ptr<const MPESamplerSound> samplerSound;
+    std::shared_ptr<const OurSamplerSound> samplerSound;
     SmoothedValue<double> level { 0 };
     SmoothedValue<double> frequency { 0 };
     double previousPressure { 0 };
@@ -149,7 +149,7 @@ private:
 //=================================================================================
 
 template<typename Element>
-void MPESamplerVoice::render (AudioBuffer<Element>& outputBuffer, int startSample, int numSamples)
+void OurSamplerVoice::render (AudioBuffer<Element>& outputBuffer, int startSample, int numSamples)
 {
     jassert (samplerSound->getSample () != nullptr);
 
@@ -173,7 +173,7 @@ void MPESamplerVoice::render (AudioBuffer<Element>& outputBuffer, int startSampl
 }
 
 template<typename Element>
-bool MPESamplerVoice::renderNextSample (const float* inL, const float* inR, Element* outL, Element* outR, size_t writePos)
+bool OurSamplerVoice::renderNextSample (const float* inL, const float* inR, Element* outL, Element* outR, size_t writePos)
 {
     auto currentLevel = level.getNextValue ();
     auto currentFrequency = frequency.getNextValue ();

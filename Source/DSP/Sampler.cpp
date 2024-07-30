@@ -10,7 +10,7 @@
 
 #include "Sampler.h"
 
-void MPESamplerVoice::noteStarted ()
+void OurSamplerVoice::noteStarted ()
 {
     jassert (currentlyPlayingNote.isValid ());
     jassert (currentlyPlayingNote.keyState == MPENote::keyDown
@@ -27,7 +27,7 @@ void MPESamplerVoice::noteStarted ()
     tailOff = 0.0;
 }
 
-void MPESamplerVoice::noteStopped (bool allowTailOff)
+void OurSamplerVoice::noteStopped (bool allowTailOff)
 {
     jassert (currentlyPlayingNote.keyState == MPENote::off);
 
@@ -37,7 +37,7 @@ void MPESamplerVoice::noteStopped (bool allowTailOff)
         stopNote ();
 }
 
-void MPESamplerVoice::notePressureChanged ()
+void OurSamplerVoice::notePressureChanged ()
 {
     const auto currentPressure = static_cast<double> (currentlyPlayingNote.pressure.asUnsignedFloat ());
     const auto deltaPressure = currentPressure - previousPressure;

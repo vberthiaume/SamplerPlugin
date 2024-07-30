@@ -100,7 +100,7 @@ private:
 
     MemoryBlock memoryBlock;
     std::unique_ptr<AudioFormatReaderFactory> readerFactory;
-    std::shared_ptr<MPESamplerSound> samplerSound = std::make_shared<MPESamplerSound>();
+    std::shared_ptr<OurSamplerSound> samplerSound = std::make_shared<OurSamplerSound>();
     MPESynthesiser synthesiser;
 
     // This mutex is used to ensure we don't modify the processor state during
@@ -144,7 +144,7 @@ void SamplerAudioProcessor::process (AudioBuffer<Element>& buffer, MidiBuffer& m
     // Update the current playback positions
     for (auto i = 0; i < maxVoices; ++i)
     {
-        auto* voicePtr = dynamic_cast<MPESamplerVoice*> (synthesiser.getVoice (i));
+        auto* voicePtr = dynamic_cast<OurSamplerVoice*> (synthesiser.getVoice (i));
 
         if (i < numVoices && voicePtr != nullptr)
             playbackPositions[(size_t) i] = static_cast<float> (voicePtr->getCurrentSamplePosition () / loadedSamplerSound->getSample ()->getSampleRate ());

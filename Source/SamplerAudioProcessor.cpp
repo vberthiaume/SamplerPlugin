@@ -4,27 +4,29 @@
 SamplerAudioProcessor::SamplerAudioProcessor ()
     : AudioProcessor (BusesProperties ().withOutput ("Output", AudioChannelSet::stereo (), true))
 {
+    //load wavefile in a memory block
     const juce::File celloWav ("C:/Users/barth/Documents/git/JUCE/examples/Assets/cello.wav");
-    if (auto inputStream = celloWav.createInputStream())
-    {
-        inputStream->readIntoMemoryBlock (memoryBlock);
-        readerFactory.reset (new MemoryAudioFormatReaderFactory (memoryBlock.getData (), memoryBlock.getSize ()));
-    }
+    const auto inputStream = celloWav.createInputStream ();
+    jassert (inputStream);  //should probably return if this is triggered
+    inputStream->readIntoMemoryBlock (memoryBlock);
 
-    // Set up initial sample, which we load from a binary resource
+    //create a reader factory with the memory block
+    readerFactory.reset (new MemoryAudioFormatReaderFactory (memoryBlock.getData (), memoryBlock.getSize ()));
+
+    //get a reader from the reader factory
     AudioFormatManager manager;
     manager.registerBasicFormats ();
-    auto reader = readerFactory->make (manager);
+    const auto reader = readerFactory->make (manager);
     jassert (reader != nullptr); // Failed to load resource!
 
     //copying the shared pointer increases the reference count,
     //and when this sound copy is deleted it'll decrease it
     auto sound = samplerSound;
-    sound->setSample (std::make_unique<Sample>(*reader, 10.0));
+    sound->setSample (std::make_unique<OurSample>(*reader, 10.0));
 
     // Start with the max number of voices
     for (auto i = 0; i != maxVoices; ++i)
-        synthesiser.addVoice (new MPESamplerVoice (sound));
+        synthesiser.addVoice (new OurSamplerVoice (sound));
 }
 
 AudioProcessorEditor* SamplerAudioProcessor::createEditor ()
@@ -55,8 +57,8 @@ void SamplerAudioProcessor::setSample (std::unique_ptr<AudioFormatReaderFactory>
     {
     public:
         SetSampleCommand (std::unique_ptr<AudioFormatReaderFactory> r,
-                          std::unique_ptr<Sample> sampleIn,
-                          std::vector<std::unique_ptr<MPESamplerVoice>> newVoicesIn) :
+                          std::unique_ptr<OurSample> sampleIn,
+                          std::vector<std::unique_ptr<OurSamplerVoice>> newVoicesIn) :
             readerFactory (std::move (r)),
             sample (std::move (sampleIn)),
             newVoices (std::move (newVoicesIn))
@@ -79,18 +81,18 @@ void SamplerAudioProcessor::setSample (std::unique_ptr<AudioFormatReaderFactory>
 
     private:
         std::unique_ptr<AudioFormatReaderFactory> readerFactory;
-        std::unique_ptr<Sample> sample;
-        std::vector<std::unique_ptr<MPESamplerVoice>> newVoices;
+        std::unique_ptr<OurSample> sample;
+        std::vector<std::unique_ptr<OurSamplerVoice>> newVoices;
     };
 
     // Note that all allocation happens here, on the main message thread. Then,
     // we transfer ownership across to the audio thread.
     auto loadedSamplerSound = samplerSound;
-    std::vector<std::unique_ptr<MPESamplerVoice>> newSamplerVoices;
+    std::vector<std::unique_ptr<OurSamplerVoice>> newSamplerVoices;
     newSamplerVoices.reserve (maxVoices);
 
     for (auto i = 0; i != maxVoices; ++i)
-        newSamplerVoices.emplace_back (new MPESamplerVoice (loadedSamplerSound));
+        newSamplerVoices.emplace_back (new OurSamplerVoice (loadedSamplerSound));
 
     if (factory == nullptr)
     {
@@ -101,7 +103,7 @@ void SamplerAudioProcessor::setSample (std::unique_ptr<AudioFormatReaderFactory>
     else if (auto reader = factory->make (formatManager))
     {
         commands.push (SetSampleCommand (std::move (factory),
-                                         std::unique_ptr<Sample> (new Sample (*reader, 10.0)),
+                                         std::unique_ptr<OurSample> (new OurSample (*reader, 10.0)),
                                          std::move (newSamplerVoices)));
     }
 }
@@ -154,7 +156,7 @@ void SamplerAudioProcessor::setNumberOfVoices (int numberOfVoices)
     class SetNumVoicesCommand
     {
     public:
-        SetNumVoicesCommand (std::vector<std::unique_ptr<MPESamplerVoice>> newVoicesIn)
+        SetNumVoicesCommand (std::vector<std::unique_ptr<OurSamplerVoice>> newVoicesIn)
             : newVoices (std::move (newVoicesIn))
         {
         }
@@ -169,16 +171,16 @@ void SamplerAudioProcessor::setNumberOfVoices (int numberOfVoices)
         }
 
     private:
-        std::vector<std::unique_ptr<MPESamplerVoice>> newVoices;
+        std::vector<std::unique_ptr<OurSamplerVoice>> newVoices;
     };
 
     numberOfVoices = std::min ((int) maxVoices, numberOfVoices);
     auto loadedSamplerSound = samplerSound;
-    std::vector<std::unique_ptr<MPESamplerVoice>> newSamplerVoices;
+    std::vector<std::unique_ptr<OurSamplerVoice>> newSamplerVoices;
     newSamplerVoices.reserve ((size_t) numberOfVoices);
 
     for (auto i = 0; i != numberOfVoices; ++i)
-        newSamplerVoices.emplace_back (new MPESamplerVoice (loadedSamplerSound));
+        newSamplerVoices.emplace_back (new OurSamplerVoice (loadedSamplerSound));
 
     commands.push (SetNumVoicesCommand (std::move (newSamplerVoices)));
 }
